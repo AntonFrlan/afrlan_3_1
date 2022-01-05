@@ -6,6 +6,7 @@ from tf2_ros import TransformException
 from tf2_ros.buffer import Buffer
 from tf2_ros.transform_listener import TransformListener
 from math import isinf
+import numpy as np
 
 
 class afNode(Node):
@@ -50,8 +51,8 @@ class afNode(Node):
         if tf is None:
             return
         kut_tocke = self.calc_angle(data.angle_min, data.angle_max, data.angle_increment)
-        prosjek = mean(udaljenosti)
-        self.get_logger().info(str(prosjek, kut_tocke))
+        prosjek = np.mean(udaljenosti)
+        self.get_logger().info(str((prosjek, kut_tocke)))
 
 
 def main(args=None):
