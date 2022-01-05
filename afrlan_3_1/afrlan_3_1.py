@@ -1,6 +1,7 @@
 import rclpy
 
 from rclpy.node import Node
+from sensor_msgs.msg import LaserScan
 from tf2_ros import TransformException
 from tf2_ros.buffer import Buffer
 from tf2_ros.transform_listener import TransformListener
@@ -16,7 +17,7 @@ class afNode(Node):
 			10
 		)
 		self.buffer = Buffer()
-        	self.transform_listener = TransformListener(self.buffer, self)
+		self.transform_listener = TransformListener(self.buffer, self)
 	
 	def get_transform(self):
 		from_frame = 'odom'
@@ -30,19 +31,22 @@ class afNode(Node):
 		        now
 		    )
 		except TransformException as e:
+		    self.get_logger().error(f'Could not get transform {e}')
 		    tf = None
-            return tf
+		return tf
 	
 	
 	def read_scan(self, data):
 		udaljenosti = []
 		for i in data.ranges:
 			if not isinf(i):
-				udaljenost.append(i)
-		self.get_logger().info(data)
+				udaljenosti.append(i)
+		self.get_logger().info(str(data))
 		tf = self.get_transform()
 		if tf is None:
-		    self.get_logger().error(f'Could not get transform {e}')
+			return
+		
+		
 			
 		
 
